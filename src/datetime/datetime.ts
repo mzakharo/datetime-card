@@ -7,7 +7,7 @@ function getState(hass: IHass, entity: IEntity): number {
     const tzOffset = new Date().getTimezoneOffset() * 60000;
     const localDateTime = Date.now() - tzOffset;
     const date = Date.parse(hass?.states?.[entity?.id]?.state) || localDateTime;
-    return Math.floor((localDateTime - date) / MS_IN_A_DAY);
+    return Math.floor((localDateTime - date) / MS_IN_A_DAY) + entity?.max;
 }
 
 function resetDate($event: Event, hass: IHass, entity: IEntity): void {
@@ -15,6 +15,7 @@ function resetDate($event: Event, hass: IHass, entity: IEntity): void {
     const entity_id = entity.id;
     const tzOffset = new Date().getTimezoneOffset() * 60000;
     const localDateTime = new Date(Date.now() - tzOffset);
+    localDateTime.setDate(localDateTime.getDate() + entity?.max);
     const localDate = localDateTime.toISOString().split("T")[0];
     const confirmation = `Do you want to reset ${friendly_name}?`;
     const element = setDatetimeServiceFactory(
