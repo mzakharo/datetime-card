@@ -1,4 +1,5 @@
 {
     "name": "Datetime Card",
+    "filename" : "datetime-card.js",
     "render_readme": true
 }
